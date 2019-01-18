@@ -1,24 +1,24 @@
 {
-  "name": "@unbill/migrate-mongo",
+  "name": "mongo-up",
   "version": "5.1.4",
   "description": "A database migration tool for MongoDB in Node",
-  "main": "lib/migrate-mongo.js",
+  "main": "lib/mongo-up.js",
   "bin": {
-    "migrate-mongo": "bin/migrate-mongo.js"
+    "mongo-up": "bin/mongo-up.js"
   },
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha --recursive",
     "test-coverage": "nyc --reporter=text-lcov mocha --recursive | coveralls",
     "lint": "eslint lib/ test/"
   },
-  "author": "Sebastian Van Sande",
+  "author": "Sebastian Van Sande, Q2 Biller-Direct Team",
   "license": "MIT",
   "keywords": [
-    "migrate mongo mongodb migrations database"
+    "migrate mongo mongodb migration database update"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/seppevs/migrate-mongo.git"
+    "url": "https://github.com/unbill/mongo-up.git"
   },
   "engines": {
     "node": ">=7.6"

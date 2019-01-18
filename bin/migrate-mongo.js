@@ -3,7 +3,7 @@
 const program = require("commander");
 const _ = require("lodash");
 const Table = require("cli-table");
-const migrateMongo = require("../lib/migrate-mongo");
+const migrateMongo = require("../lib/mongo-up");
 const pkgjson = require("../package.json");
 
 function printMigrated(migrated = []) {

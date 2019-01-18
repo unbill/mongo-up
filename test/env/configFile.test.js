@@ -26,7 +26,7 @@ describe("configFile", () => {
     });
 
     it("should yield an error if the config file does not exist", async () => {
-      const configPath = path.join(process.cwd(), "migrate-mongo-config.js");
+      const configPath = path.join(process.cwd(), "mongo-up-config.js");
       fs.stat.returns(Promise.reject(new Error("It does not exist")));
       try {
         await configFile.shouldExist();
@@ -48,7 +48,7 @@ describe("configFile", () => {
     });
 
     it("should yield an error if the config file exists", async () => {
-      const configPath = path.join(process.cwd(), "migrate-mongo-config.js");
+      const configPath = path.join(process.cwd(), "mongo-up-config.js");
       fs.stat.returns(Promise.resolve());
       try {
         await configFile.shouldNotExist();
@@ -64,14 +64,14 @@ describe("configFile", () => {
   describe("getConfigFilename()", () => {
     it("should return the config file name", () => {
       expect(configFile.getConfigFilename()).to.equal(
-        "migrate-mongo-config.js"
+        "mongo-up-config.js"
       );
     });
   });
 
   describe("read()", () => {
     it("should attempt to read the config file", async () => {
-      const configPath = path.join(process.cwd(), "migrate-mongo-config.js");
+      const configPath = path.join(process.cwd(), "mongo-up-config.js");
       try {
         await configFile.read();
         expect.fail("Error was not thrown");

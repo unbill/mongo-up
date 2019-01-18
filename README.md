@@ -1,17 +1,15 @@
-# migrate-mongo
-A database migration tool for MongoDB in Node. 
-
-✨ [![Build Status](http://img.shields.io/travis/seppevs/migrate-mongo.svg?style=flat)](https://travis-ci.org/seppevs/migrate-mongo) [![Coverage Status](https://coveralls.io/repos/github/seppevs/migrate-mongo/badge.svg?branch=master)](https://coveralls.io/r/seppevs/migrate-mongo) [![NPM](http://img.shields.io/npm/v/migrate-mongo.svg?style=flat)](https://www.npmjs.org/package/migrate-mongo) [![Downloads](http://img.shields.io/npm/dm/migrate-mongo.svg?style=flat)](https://www.npmjs.org/package/migrate-mongo) [![Dependencies](https://david-dm.org/seppevs/migrate-mongo.svg)](https://david-dm.org/seppevs/migrate-mongo) [![Known Vulnerabilities](https://snyk.io/test/github/seppevs/migrate-mongo/badge.svg)](https://snyk.io/test/github/seppevs/migrate-mongo) ✨
+# mongo-up
+A database migration tool for MongoDB in Node. This project was forked from migrate-mongo, and enhanced with some additional capabilities.
 
 ## Installation
 ````bash
-$ npm install -g migrate-mongo
+$ npm install -g mongo-up
 ````
 
 ## CLI Usage
 ````
-$ migrate-mongo
-Usage: migrate-mongo [options] [command]
+$ mongo-up
+Usage: mongo-up [options] [command]
 
 
   Commands:
@@ -40,19 +38,19 @@ $ mkdir albums-migrations
 $ cd albums-migrations
 ````
 
-Initialize a new migrate-mongo project
+Initialize a new mongo-up project
 ````bash
-$ migrate-mongo init
-Initialization successful. Please edit the generated migrate-mongo-config.js file
+$ mongo-up init
+Initialization successful. Please edit the generated mongo-up-config.js file
 ````
 
 The above command did two things: 
-1. create a sample 'migrate-mongo-config.js' file and 
+1. create a sample 'mongo-up-config.js' file and 
 2. create a 'migrations' directory
 
-Edit the migrate-mongo-config.js file. An object or promise can be returned. Make sure you change the mongodb url: 
+Edit the mongo-up-config.js file. An object or Promise can be returned. Make sure you change the mongodb url: 
 ````javascript
-// In this file you can configure migrate-mongo
+// In this file you can configure mongo-up
 
 module.exports = {
   mongodb: {
@@ -84,11 +82,11 @@ module.exports = {
 ````
 
 ### Creating a new migration script
-To create a new database migration script, just run the ````migrate-mongo create [description]```` command.
+To create a new database migration script, just run the ````mongo-up create [description]```` command.
 
 For example:
 ````bash
-$ migrate-mongo create blacklist_the_beatles
+$ mongo-up create blacklist_the_beatles
 Created: migrations/20160608155948-blacklist_the_beatles.js
 ````
 
@@ -97,7 +95,7 @@ A new migration file is created in the 'migrations' directory:
 module.exports = {
   up(db) {
     // TODO write your migration here. Return a Promise (and/or use async & await).
-    // See https://github.com/seppevs/migrate-mongo/#creating-a-new-migration-script
+    // See https://github.com/unbill/mongo-up/#creating-a-new-migration-script
     // Example:
     // return db.collection('albums').updateOne({artist: 'The Beatles'}, {$set: {blacklisted: true}});
   },
@@ -114,7 +112,7 @@ Edit this content so it actually performs changes to your database. Don't forget
 The ````db```` object contains [the official MongoDB db object](https://www.npmjs.com/package/mongodb)
 
 There are 3 options to implement the `up` and `down` functions of your migration: 
-1. Return a Promises
+1. Return a Promise
 2. Use async-await 
 3. Call a callback (deprecated)
 
@@ -170,14 +168,14 @@ module.exports = {
 ````
 
 ### Creating a new 'before' or 'after' script
-To create a new database before or after script, just run ````migrate-mongo create-before [description]```` or
-````migrate-mongo create-after [description]````. As the names imply, these scripts get 
+To create a new database before or after script, just run ````mongo-up create-before [description]```` or
+````mongo-up create-after [description]````. As the names imply, these scripts get 
 run each time either before or after the database migration is run. 
 These scripts are good for tasks like ensuring indexes on each migration run.
 
 For example:
 ````bash
-$ migrate-mongo create-after blacklist_the_beatles_idx
+$ mongo-up create-after blacklist_the_beatles_idx
 Created: after/20160608155948-blacklist_the_beatles_idx.js
 ````
 
@@ -187,7 +185,7 @@ Always scripts only contain an 'up' as they are not a migration.
 module.exports = {
   up(db) {
     // TODO write your migration here. Return a Promise (and/or use async & await).
-    // See https://github.com/seppevs/migrate-mongo/#creating-a-new-migration-script
+    // See https://github.com/unbill/mongo-up/#creating-a-new-migration-script
     // Example:
     // return db.collection('albums').updateOne({artist: 'The Beatles'}, {$set: {blacklisted: true}});
   }
@@ -199,7 +197,7 @@ module.exports = {
 At any time, you can check which migrations are applied (or not)
 
 ````bash
-$ migrate-mongo status
+$ mongo-up status
 ┌─────────────────────────────────────────┬────────────┐
 │ Filename                                │ Applied At │
 ├─────────────────────────────────────────┼────────────┤
@@ -212,7 +210,7 @@ $ migrate-mongo status
 ### Migrate up
 This command will apply all pending migrations
 ````bash
-$ migrate-mongo up
+$ mongo-up up
 MIGRATED UP: 20160608155948-blacklist_the_beatles.js
 ````
 
@@ -220,7 +218,7 @@ If an an error occurred, it will stop and won't continue with the rest of the pe
 
 If we check the status again, we can see the last migration was successfully applied:
 ````bash
-$ migrate-mongo status
+$ mongo-up status
 ┌─────────────────────────────────────────┬──────────────────────────┐
 │ Filename                                │ Applied At               │
 ├─────────────────────────────────────────┼──────────────────────────┤
@@ -229,16 +227,16 @@ $ migrate-mongo status
 ````
 
 ### Migrate down
-With this command, migrate-mongo will revert (only) the last applied migration
+With this command, mongo-up will revert (only) the last applied migration
 
 ````bash
-$ migrate-mongo down
+$ mongo-up down
 MIGRATED DOWN: 20160608155948-blacklist_the_beatles.js
 ````
 
 If we check the status again, we see that the reverted migration is pending again:
 ````bash
-$ migrate-mongo status
+$ mongo-up status
 ┌─────────────────────────────────────────┬────────────┐
 │ Filename                                │ Applied At │
 ├─────────────────────────────────────────┼────────────┤
@@ -248,12 +246,12 @@ $ migrate-mongo status
 
 ## Using a custom config file
 All actions (except ```init```) accept an optional ````-f```` or ````--file```` option to specify a path to a custom config file.
-By default, migrate-mongo will look for a ````migrate-mongo-config.js```` config file in of the current directory.
+By default, mongo-up will look for a ````mongo-up-config.js```` config file in of the current directory.
 
 ### Example:
 
 ````bash
-$ migrate-mongo status -f '~/configs/albums-migrations.js'
+$ mongo-up status -f '~/configs/albums-migrations.js'
 ┌─────────────────────────────────────────┬────────────┐
 │ Filename                                │ Applied At │
 ├─────────────────────────────────────────┼────────────┤
@@ -273,21 +271,21 @@ const {
   up,
   down,
   status
-} = require('migrate-mongo');
+} = require('mongo-up');
 ```
 
 ### `init() → Promise`
 
-Initialize a new migrate-mongo project
+Initialize a new mongo-up project
 ```javascript
 await init();
 ```
 
 The above command did two things: 
-1. create a sample `migrate-mongo-config.js` file and 
+1. create a sample `mongo-up-config.js` file and 
 2. create a `migrations` directory
 
-Edit the `migrate-mongo-config.js` file. Make sure you change the mongodb url.
+Edit the `mongo-up-config.js` file. Make sure you change the mongodb url.
 
 ### `create(description) → Promise<fileName>`
 
@@ -321,7 +319,7 @@ A new always-after file is created in the `after` directory.
 
 ### `database.connect() → Promise<MongoDb>`
 
-Connect to a mongo database using the connection settings from the `migrate-mongo-config.js` file.
+Connect to a mongo database using the connection settings from the `mongo-up-config.js` file.
 
 ```javascript
 const db = await database.connect();
@@ -329,7 +327,7 @@ const db = await database.connect();
 
 ### `config.read() → Promise<JSON>`
 
-Read connection settings from the `migrate-mongo-config.js` file.
+Read connection settings from the `mongo-up-config.js` file.
 
 ```javascript
 const mongoConnectionSettings = await config.read();
@@ -345,7 +343,7 @@ const migrated = await up(db);
 migrated.forEach(fileName => console.log('Migrated:', fileName));
 ```
 
-If an an error occurred, the promise will reject and won't continue with the rest of the pending migrations.
+If an an error occurred, the Promise will reject and won't continue with the rest of the pending migrations.
 
 ### `down(MongoDb) → Promise<Array<fileName>>`
 

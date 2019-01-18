@@ -23,7 +23,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}\\lib\\migrate-mongo.js"
+      "program": "${workspaceFolder}\\lib\\mongo-up.js"
     }
   ]
 }

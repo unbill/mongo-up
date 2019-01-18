@@ -92,8 +92,8 @@ describe("database", () => {
         expect.fail("Error was not thrown");
       } catch (err) {
         expect(err.message).to.equal(
-          "No `databaseName` defined in config file! This is required since migrate-mongo v3. " +
-            "See https://github.com/seppevs/migrate-mongo#initialize-a-new-project"
+          "No `databaseName` defined in config file! " +
+            "See https://github.com/unbill/mongo-up#initialize-a-new-project"
         );
       }
     });

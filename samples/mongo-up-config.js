@@ -1,4 +1,4 @@
-// In this file you can configure migrate-mongo
+// In this file you can configure mongo-up
 
 const config = {
   mongodb: {
@@ -28,5 +28,5 @@ const config = {
   changelogCollectionName: "changelog"
 };
 
-//Return the config as a promise
+// Return the config as a promise
 module.exports = config;
