@@ -1,5 +1,8 @@
 # mongo-up
-A database migration tool for MongoDB in Node. This project was forked from migrate-mongo, and enhanced with some additional capabilities.
+[![Build Status](https://travis-ci.com/unbill/mongo-up.svg?branch=master)](https://travis-ci.com/unbill/mongo-up)
+A database migration tool for MongoDB in Node. This project was forked from migrate-mongo, and enhanced with the capability to
+have "run always" scripts before or after the deployment. This is convenient when applying indexes or other structures that should 
+always be run idempotently.
 
 ## Installation
 ````bash
