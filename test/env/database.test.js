@@ -2,12 +2,14 @@ const { expect } = require("chai");
 const sinon = require("sinon");
 const proxyquire = require("proxyquire");
 
-describe("database", () => {
+describe("database", function () {
   let configObj;
   let database;
   let configFile;
   let mongodb;
   let client;
+
+  this.timeout(10000);
 
   function createConfigObj() {
     return {
@@ -51,7 +53,7 @@ describe("database", () => {
 
     database = proxyquire("../../lib/env/database", {
       "./configFile": configFile,
-      mongodb
+      "mongodb":mongodb
     });
   });
 
@@ -108,5 +110,5 @@ describe("database", () => {
         expect(err.message).to.equal("Unable to connect");
       }
     });
-  });
+  })
 });
