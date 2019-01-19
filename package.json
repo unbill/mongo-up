@@ -1,6 +1,6 @@
 {
   "name": "mongo-up",
-  "version": "5.1.5",
+  "version": "5.1.7",
   "description": "A database migration tool for MongoDB in Node",
   "main": "lib/mongo-up.js",
   "bin": {
