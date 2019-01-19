@@ -52,7 +52,11 @@ The above command did two things:
 1. create a sample 'mongo-up-config.js' file and 
 2. create a 'migrations' directory
 
-Edit the mongo-up-config.js file. An object or Promise can be returned. Make sure you change the mongodb url: 
+Edit the mongo-up-config.js file. 
+An object or Promise can be returned. A Promise would be returned if you need to call an external API like the AWS SDK to get configuration information.
+
+#### Static file example
+Make sure you change the mongodb url: 
 ````javascript
 // In this file you can configure mongo-up
 
@@ -83,6 +87,53 @@ module.exports = {
   // The mongodb collection where the applied changes are stored. Only edit this when really necessary.
   changelogCollectionName: "changelog"
 };
+````
+
+#### Promise example
+````javascript
+// In this file you can configure migrate-mongo
+const AWS = require('aws-sdk')
+
+const ssm = new AWS.SSM()
+const params = {
+  Name: process.env.MONGO_CONNECTION_KEY, 
+  WithDecryption: true
+}
+
+module.exports = ssm.getParameter(params).promise().then(data => {
+  const url = data.Parameter.Value
+  const dbName = url.split("?")[0].split("/").pop()
+
+  const mongoSettings = {
+    // TODO Change (or review) the url to your MongoDB:
+    url: data.Parameter.Value,
+  
+    // TODO Change this to your database name:
+    databaseName: dbName,
+  
+    options: {
+      useNewUrlParser: true // removes a deprecation warning when connecting
+      //   connectTimeoutMS: 3600000, // increase connection timeout to 1 hour
+      //   socketTimeoutMS: 3600000, // increase socket timeout to 1 hour
+    }
+  }
+
+  return {
+    mongodb: mongoSettings,
+
+    // The before dir, can be an relative or absolute path. Only edit this when really necessary.
+    beforeDir: "before",
+  
+    // The migrations dir, can be an relative or absolute path. Only edit this when really necessary.
+    migrationsDir: "migrations",
+
+    // The after dir, can be an relative or absolute path. Only edit this when really necessary.
+    afterDir: "after",
+  
+    // The mongodb collection where the applied changes are stored. Only edit this when really necessary.
+    changelogCollectionName: "changelog"
+  }
+})
 ````
 
 ### Creating a new migration script
