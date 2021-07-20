@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const sinon = require("sinon");
+const sinon = require("sinon").createSandbox();
 const path = require("path");
 const proxyquire = require("proxyquire");
 
@@ -56,6 +56,10 @@ describe("init", () => {
       "fs-extra": fs
     });
   });
+
+  after(() => {
+    sinon.restore()
+  })
 
   it("should check if the migrations directory already exists", async () => {
     await init();

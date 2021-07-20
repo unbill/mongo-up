@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const sinon = require("sinon");
+const sinon = require("sinon").createSandbox();
 const proxyquire = require("proxyquire");
 
 describe("database", function () {
@@ -56,6 +56,10 @@ describe("database", function () {
       "mongodb":mongodb
     });
   });
+
+  after(() => {
+    sinon.restore()
+  })
 
   describe("connect()", () => {
     it("should connect MongoClient to the configured mongodb url with the configured options", async () => {

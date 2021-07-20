@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const sinon = require("sinon");
+const sinon = require("sinon").createSandbox();
 const proxyquire = require("proxyquire");
 
 const path = require("path");
@@ -18,6 +18,10 @@ describe("configFile", () => {
     fs = mockFs();
     configFile = proxyquire("../../lib/env/configFile", { "fs-extra": fs });
   });
+
+  after(() => {
+    sinon.restore()
+  })
 
   describe("shouldExist()", () => {
     it("should not yield an error if the config file exists", async () => {
@@ -76,7 +80,7 @@ describe("configFile", () => {
         await configFile.read();
         expect.fail("Error was not thrown");
       } catch (err) {
-        expect(err.message).to.equal(`Cannot find module '${configPath}'`);
+        expect(err.message).to.contain(`Cannot find module '${configPath}'`);
       }
     });
 
@@ -86,7 +90,7 @@ describe("configFile", () => {
         await configFile.read();
         expect.fail("Error was not thrown");
       } catch (err) {
-        expect(err.message).to.equal(
+        expect(err.message).to.contain(
           `Cannot find module '${global.options.file}'`
         );
       }
@@ -99,7 +103,7 @@ describe("configFile", () => {
         await configFile.read();
         expect.fail("Error was not thrown");
       } catch (err) {
-        expect(err.message).to.equal(`Cannot find module '${configPath}'`);
+        expect(err.message).to.contain(`Cannot find module '${configPath}'`);
       }
     });
   });

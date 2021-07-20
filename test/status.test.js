@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const sinon = require("sinon");
+const sinon = require("sinon").createSandbox();
 
 const proxyquire = require("proxyquire");
 
@@ -126,6 +126,10 @@ describe("status", () => {
       "fs-extra": fs
     });
   });
+
+  after(() => {
+    sinon.restore()
+  })
 
   it("should check that the migrations directories exists", async () => {
     await status(db);

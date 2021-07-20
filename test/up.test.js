@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const sinon = require("sinon");
+const sinon = require("sinon").createSandbox();
 
 const proxyquire = require("proxyquire");
 
@@ -162,6 +162,10 @@ describe("up", () => {
     up = loadUpWithInjectedMocks();
   });
 
+  after(() => {
+    sinon.restore()
+  })
+
   it("should fetch the status", async () => {
     await up(db);
     expect(status.called).to.equal(true);
@@ -211,7 +215,7 @@ describe("up", () => {
     expect(secondPendingMigration.up.called).to.equal(true);
     expect(firstAppliedAfter.up.called).to.equal(true);
     expect(firstPendingAfter.up.called).to.equal(true);
-    sinon.assert.callOrder(firstAppliedBefore.up, firstPendingBefore.up, 
+    sinon.assert.callOrder(firstAppliedBefore.up, firstPendingBefore.up,
       firstPendingMigration.up, secondPendingMigration.up, firstAppliedAfter.up, firstPendingAfter.up);
   });
 
