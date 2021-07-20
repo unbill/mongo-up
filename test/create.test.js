@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const sinon = require("sinon");
+const sinon = require("sinon").createSandbox();
 const path = require("path");
 
 const proxyquire = require("proxyquire");
@@ -38,6 +38,10 @@ describe("create", () => {
       "fs-extra": fs
     });
   });
+
+  after(() => {
+    sinon.restore();
+  })
 
   it("should yield an error when called without a description", async () => {
     try {

@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const sinon = require("sinon");
+const sinon = require("sinon").createSandbox();
 const proxyquire = require("proxyquire");
 
 const path = require("path");
@@ -32,6 +32,10 @@ describe("beforeDir", () => {
       "./configFile": configFile
     });
   });
+
+  after(() => {
+    sinon.restore()
+  })
 
   describe("resolve()", () => {
     it("should use the configured relative always dir when a config file is available", async () => {
@@ -144,7 +148,7 @@ describe("beforeDir", () => {
         await beforeDir.loadMigration("someFile.js");
         expect.fail("Error was not thrown");
       } catch (err) {
-        expect(err.message).to.equal(`Cannot find module '${pathToMigration}'`);
+        expect(err.message).to.contain(`Cannot find module '${pathToMigration}'`);
       }
     });
   });

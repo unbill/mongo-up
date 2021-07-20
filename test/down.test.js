@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const sinon = require("sinon");
+const sinon = require("sinon").createSandbox();
 
 const proxyquire = require("proxyquire");
 
@@ -82,6 +82,10 @@ describe("down", () => {
 
     down = loadDownWithInjectedMocks();
   });
+
+  after(() => {
+    sinon.restore()
+  })
 
   it("should fetch the status", async () => {
     await down(db);
