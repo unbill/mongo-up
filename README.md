@@ -5,6 +5,9 @@ A database migration tool for MongoDB in Node. This project was forked from migr
 have "run always" scripts before or after the deployment. This is convenient when applying indexes or other structures that should 
 always be run idempotently.
 
+### V6 Breaking Changes
+Note: As of V6, mongodb is specified as a peer dependency. It must be added as a dependency to your migration project.
+
 ## Installation
 ````bash
 $ npm install -g mongo-up
