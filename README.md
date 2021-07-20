@@ -6,10 +6,11 @@ have "run always" scripts before or after the deployment. This is convenient whe
 always be run idempotently.
 
 ### V6 Breaking Changes
-Note: As of V6, mongodb is specified as a peer dependency. It must be added as a dependency to your migration project.
+Note: As of V6, mongodb is specified as a peer dependency. It must be installed globally along with mongo-up.
 
 ## Installation
 ````bash
+$ npm install -g mongodb
 $ npm install -g mongo-up
 ````
 
@@ -37,7 +38,7 @@ Usage: mongo-up [options] [command]
 
 ## Quickstart
 ### Initialize a new project
-Make sure you have [Node.js](https://nodejs.org/en/) 7.6.0 (or higher) installed.  
+Make sure you have [Node.js](https://nodejs.org/en/) 10 (or higher) installed.  
 
 Create a directory where you want to store your migrations for your mongo database (eg. 'albums' here) and cd into it
 ````bash
